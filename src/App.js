@@ -12,7 +12,16 @@ function App() {
   let robotChoice;
   const [result, setResult] = useState();
   const [roboDisplay, setRoboDisplay] = useState();
+  const [roboScore, setRoboScore] = useState(0);
+  const [userScore, setUserScore] = useState(0);
 
+  const incrementScore = (type) => {
+    if (type === "Player") {
+      setUserScore(userScore + 1);
+    } else {
+      setRoboScore(roboScore + 1);
+    }
+  };
   function playRobo() {
     let number = getRandomInt(3);
     if (number === 0) robotChoice = "Rock";
@@ -23,17 +32,30 @@ function App() {
 
   function playGame() {
     playRobo();
-    setResult("Lose");
+
     if (robotChoice === userChoice) setResult("Draw");
-    if (robotChoice === "Rock" && userChoice === "Paper") setResult("Win");
-    if (robotChoice === "Paper" && userChoice === "Scissors") setResult("Win");
-    if (robotChoice === "Scissors" && userChoice === "Rock") setResult("Win");
+    else if (robotChoice === "Rock" && userChoice === "Paper") {
+      setResult("Win");
+      incrementScore("Player");
+    } else if (robotChoice === "Paper" && userChoice === "Scissors") {
+      setResult("Win");
+      incrementScore("Player");
+    } else if (robotChoice === "Scissors" && userChoice === "Rock") {
+      setResult("Win");
+      incrementScore("Player");
+    } else {
+      setResult("Lose");
+      incrementScore();
+    }
   }
 
   return (
     <>
       <h1>Rock, Paper, Scissors!</h1>
       <h2>Choose an option!</h2>
+      <p>
+        User {userScore} - {roboScore} Computer
+      </p>
       <table>
         <tbody>
           <tr>
